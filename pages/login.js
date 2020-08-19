@@ -1,12 +1,21 @@
-import React, { useContext } from "react";
-import Layout from "../components/Layout";
+import React, { useContext, useEffect } from "react";
+import { useRouter } from 'next/router'
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import AuthContext from "../context/auth/authContext";
+import Layout from "../components/Layout";
+import Alert from "../components/Alert";
 
 const Login = () => {
   const authContext = useContext(AuthContext);
-  const { userAuthenticated } = authContext
+  const { isAuthenticated, messageError, login } = authContext;
+  const router = useRouter();
+
+  useEffect(() => {
+    if(isAuthenticated){
+      router.push('/');
+    }
+  }, [isAuthenticated])
 
   const formik = useFormik({
     initialValues: {
@@ -20,8 +29,7 @@ const Login = () => {
       userPassword: Yup.string().required("La contraseña es obligatoria"),
     }),
     onSubmit: values => {
-      userAuthenticated(values.userEmail)
-      console.log(values)
+      login(values)
     }
   });
   
@@ -31,6 +39,7 @@ const Login = () => {
         <h2 className="text-4xl font-sans font-bold text-gray-900 text-center my-4">
           Iniciar sesión
         </h2>
+        {messageError && <Alert message={messageError} color="red" intensity="500"/> }
         <div className="flex justify-center mt-5">
           <div className="w-full max-w-lg">
             <form

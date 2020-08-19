@@ -3,10 +3,11 @@ import Layout from "../components/Layout";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import AuthContext from "../context/auth/authContext";
+import Alert from "../components/Alert";
 
 const Signup = () => {
   const authContext = useContext(AuthContext);
-  const { registerUser } = authContext
+  const { registerUser, messageSuccess, messageError } = authContext
 
   const formik = useFormik({
     initialValues: {
@@ -32,6 +33,8 @@ const Signup = () => {
         <h2 className="text-4xl font-sans font-bold text-gray-900 text-center my-4">
           Crear cuenta
         </h2>
+        {messageSuccess && <Alert message={messageSuccess} color="teal" intensity="800"/>}
+        {messageError && <Alert message={messageError} color="red" intensity="500"/>}
         <div className="flex justify-center mt-5">
           <div className="w-full max-w-lg">
             <form
