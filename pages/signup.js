@@ -1,9 +1,13 @@
-import React from "react";
+import React, { useContext } from "react";
 import Layout from "../components/Layout";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import AuthContext from "../context/auth/authContext";
 
 const Signup = () => {
+  const authContext = useContext(AuthContext);
+  const { registerUser } = authContext
+
   const formik = useFormik({
     initialValues: {
       userName: "",
@@ -19,7 +23,7 @@ const Signup = () => {
         .required("La contraseña es obligatoria")
         .min(6, "La contraseña debe contenener almenos 6 caracteres"),
     }),
-    onSubmit: (values) => { console.log(values); },
+    onSubmit: (values) => { registerUser(values) },
   });
   
   return (

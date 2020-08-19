@@ -1,9 +1,13 @@
-import React from "react";
+import React, { useContext } from "react";
 import Layout from "../components/Layout";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import AuthContext from "../context/auth/authContext";
 
 const Login = () => {
+  const authContext = useContext(AuthContext);
+  const { userAuthenticated } = authContext
+
   const formik = useFormik({
     initialValues: {
       userEmail: "",
@@ -15,7 +19,10 @@ const Login = () => {
         .email("Ingresa un correo válido"),
       userPassword: Yup.string().required("La contraseña es obligatoria"),
     }),
-    onSubmit: values => console.log(values)
+    onSubmit: values => {
+      userAuthenticated(values.userEmail)
+      console.log(values)
+    }
   });
   
   return (
