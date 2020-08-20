@@ -1,7 +1,7 @@
 import React, { useReducer } from 'react'
 import AuthContext from './authContext'
 import authReducer from './authReducer'
-import { AUTHENTICATION_SUCCESS, REGISTER_SUCCESS, REGISTER_ERROR, CLEAN_ALERTS, LOGIN_ERROR, LOGIN_SUCCESS } from '../types'
+import { AUTHENTICATION_SUCCESS, REGISTER_SUCCESS, REGISTER_ERROR, CLEAN_ALERTS, LOGIN_ERROR, LOGIN_SUCCESS, SIGNOUT } from '../types'
 import axiosClient from '../../config/axios'
 import tokenAuth from '../../config/tokenAuth'
 
@@ -56,13 +56,21 @@ const AuthState = props => {
     }
     try {
       const response = await axiosClient.get('/api/auth');
-      dispatch({
-        type: AUTHENTICATION_SUCCESS,
-        payload: response.data.user
-      })
+      if(response.data.user){
+        dispatch({
+          type: AUTHENTICATION_SUCCESS,
+          payload: response.data.user
+        })
+      }
     } catch (error) {
       console.log(error);
     }
+  }
+
+  const signOut = () => {
+    dispatch({
+      type: SIGNOUT
+    });
   }
 
   const cleanAlerts = () => {
@@ -83,7 +91,8 @@ const AuthState = props => {
         messageError: state.messageError,
         registerUser,
         login,
-        getAuthenticatedUser
+        getAuthenticatedUser,
+        signOut
       }}
     >
       {props.children}

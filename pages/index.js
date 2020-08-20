@@ -8,7 +8,7 @@ const Index = () => {
 
   useEffect(() => {
     getAuthenticatedUser()
-  })
+  }, [])
   return (
     <Layout>
       

@@ -1,4 +1,4 @@
-import { REGISTER_SUCCESS, REGISTER_ERROR, CLEAN_ALERTS, LOGIN_ERROR, LOGIN_SUCCESS, AUTHENTICATION_SUCCESS } from "../types"
+import { REGISTER_SUCCESS, REGISTER_ERROR, CLEAN_ALERTS, LOGIN_ERROR, LOGIN_SUCCESS, AUTHENTICATION_SUCCESS, SIGNOUT } from "../types"
 
 const authReducer = (state, action) => {
   switch (action.type) {
@@ -24,6 +24,14 @@ const authReducer = (state, action) => {
           ...state,
           isAuthenticated: true,
           user: action.payload
+        }
+      case SIGNOUT: 
+        localStorage.removeItem('reactSendToken');
+        return {
+          ...state,
+          isAuthenticated: null,
+          user: null,
+          token: null
         }
       case CLEAN_ALERTS:
         return{
