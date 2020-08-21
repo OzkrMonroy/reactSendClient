@@ -3,7 +3,11 @@ import { useDropzone } from "react-dropzone";
 import axiosClient from "../config/axios";
 
 const Dropzone = () => {
-  const onDrop = useCallback(async (acceptedFiles) => {
+  const onDropRejected = () => {
+    console.log('No se pudo subir');
+  }
+
+  const onDropAccepted = useCallback(async (acceptedFiles) => {
     console.log(acceptedFiles);
     const formData = new FormData();
     formData.append("file", acceptedFiles[0]);
@@ -12,12 +16,7 @@ const Dropzone = () => {
     console.log(response.data);
   }, []);
 
-  const {
-    getRootProps,
-    getInputProps,
-    isDragActive,
-    acceptedFiles,
-  } = useDropzone({ onDrop });
+  const { getRootProps, getInputProps, isDragActive, acceptedFiles } = useDropzone({ onDropAccepted, onDropRejected, maxSize: 1000000 });
 
   const filesList = acceptedFiles.map((file) => (
     <li
