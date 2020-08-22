@@ -3,10 +3,15 @@ import Layout from '../components/Layout';
 import AuthContext from '../context/auth/authContext';
 import Link from 'next/link';
 import Dropzone from '../components/Dropzone';
+import AppContext from '../context/app/appContext';
+import Alert from '../components/Alert';
 
 const Index = () => {
   const authContext = useContext(AuthContext);
+  const appContext = useContext(AppContext);
+
   const { getAuthenticatedUser, user } = authContext
+  const { message_file } = appContext;
 
   useEffect(() => {
     getAuthenticatedUser()
@@ -14,6 +19,7 @@ const Index = () => {
   return (
     <Layout>
       <div className="md:w-4/5 xl:w-3/5 mx-auto mb-32">
+        { message_file && <Alert message={message_file} color="red" intensity="500"/> }
         <div className="lg:flex md:shadow-lg p-5 rounded-lg bg-white py-10">
           <Dropzone/>
           <div className="md:flex-1 mb-3 mx-2 mt-16 lg:mt-0">
