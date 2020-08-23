@@ -1,7 +1,7 @@
 import React, { useReducer } from 'react'
 import AppContext from './appContext';
 import appReducer from './appReducer';
-import { SHOW_ALERT, CLEAN_ALERTS, UPLOAD_FILE_SUCCESS, UPLOAD_FILE_ERROR, LOADING_UPLOAD, CREATE_LINK_SUCCESS } from '../types';
+import { SHOW_ALERT, CLEAN_ALERTS, UPLOAD_FILE_SUCCESS, UPLOAD_FILE_ERROR, LOADING_UPLOAD, CREATE_LINK_SUCCESS, CLEAN_STATE } from '../types';
 import axiosClient from '../../config/axios';
 
 const AppState = ({children}) => {
@@ -70,6 +70,12 @@ const AppState = ({children}) => {
     }
   }
 
+  const resetState = () => {
+    dispatch({
+      type: CLEAN_STATE,
+    })
+  }
+
   const cleanMessage = () => {
     setTimeout(() => {
       dispatch({
@@ -90,7 +96,8 @@ const AppState = ({children}) => {
       fileUrl: state.fileUrl,
       showAlert,
       uploadFile,
-      createLink
+      createLink,
+      resetState
     }}>
       {children}
     </AppContext.Provider>
