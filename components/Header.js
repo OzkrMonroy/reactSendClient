@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from "react";
 import Link from "next/link";
-import { useRouter } from 'next/router'
+import { useRouter } from "next/router";
 
 import AuthContext from "../context/auth/authContext";
 import AppContext from "../context/app/appContext";
@@ -10,22 +10,30 @@ const Header = () => {
   const appContext = useContext(AppContext);
 
   const { user, getAuthenticatedUser, signOut } = authContext;
-  const { resetState } = appContext
+  const { resetState } = appContext;
 
   const router = useRouter();
 
   useEffect(() => {
-    getAuthenticatedUser();
+    const token = localStorage.getItem("reactSendToken");
+    if (token) {
+      getAuthenticatedUser();
+    }
   }, []);
 
   const redirect = () => {
     resetState();
-    router.push('/');
-  }
+    router.push("/");
+  };
 
   return (
     <header className="py-8 flex flex-col md:flex-row items-center justify-between">
-      <img src="/logo.svg" alt="Icon home" className="w-64 mb-8 md:mb-0 cursor-pointer" onClick={redirect}/>
+      <img
+        src="/logo.svg"
+        alt="Icon home"
+        className="w-64 mb-8 md:mb-0 cursor-pointer"
+        onClick={redirect}
+      />
       <div>
         {user ? (
           <div className="flex items-center">
@@ -33,7 +41,8 @@ const Header = () => {
             <button
               type="button"
               className="bg-black px-5 py-3 rounded-lg text-white font-bold uppercase"
-              onClick={() => signOut()}>
+              onClick={() => signOut()}
+            >
               Cerrar sesión
             </button>
           </div>

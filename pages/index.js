@@ -14,7 +14,10 @@ const Index = () => {
   const { message_file, fileUrl } = appContext;
 
   useEffect(() => {
-    getAuthenticatedUser()
+    const token = localStorage.getItem('reactSendToken');
+    if(token){
+      getAuthenticatedUser()
+    }
   }, [])
   return (
     <Layout>

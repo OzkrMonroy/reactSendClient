@@ -1,10 +1,24 @@
-import React, { useCallback, useContext } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import AppContext from "../context/app/appContext";
+import AuthContext from "../context/auth/authContext";
+import DropForm from "./DropForm";
 
 const Dropzone = () => {
   const appContext = useContext(AppContext);
   const { loading, showAlert, uploadFile, createLink } = appContext;
+
+  const authContext = useContext(AuthContext);
+  const { isAuthenticated, user } = authContext
+
+  const [fileSize, setFileSize] = useState(1000000)
+
+
+  useEffect(() => {
+    if(user){
+      setFileSize(25000000)
+    }
+  }, [user])
 
   const onDropRejected = () => {
     showAlert('El tamaño del archivo supera el límite. Crea una cuenta para enviar archivos pesados.')
@@ -16,7 +30,7 @@ const Dropzone = () => {
     uploadFile(formData, acceptedFiles[0].path);
   }, []);
 
-  const { getRootProps, getInputProps, isDragActive, acceptedFiles } = useDropzone({ onDropAccepted, onDropRejected, maxSize: 1000000 });
+  const { getRootProps, getInputProps, isDragActive, acceptedFiles } = useDropzone({ onDropAccepted, onDropRejected, maxSize: fileSize});
 
   const filesList = acceptedFiles.map((file) => (
     <li
@@ -36,6 +50,7 @@ const Dropzone = () => {
         <div className="w-full mt-10">
           <h4 className="text-2xl fond-bold text-center mb-4">Archivos</h4>
           <ul>{filesList}</ul>
+          {isAuthenticated && <DropForm/>}
           {loading ? <p className="py-10 text-center text-gray-700">Subiendo archivo...</p> : (
             <button
               className="bg-blue-700 w-full py-3 rounded-lg text-white my-10 hover:bg-blue-800"

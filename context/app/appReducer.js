@@ -1,4 +1,4 @@
-import { SHOW_ALERT, CLEAN_ALERTS, UPLOAD_FILE_SUCCESS, UPLOAD_FILE_ERROR, LOADING_UPLOAD, CREATE_LINK_SUCCESS, CLEAN_STATE } from "../types";
+import { SHOW_ALERT, CLEAN_ALERTS, UPLOAD_FILE_SUCCESS, UPLOAD_FILE_ERROR, LOADING_UPLOAD, CREATE_LINK_SUCCESS, CLEAN_STATE, SAVING_PASSWORD, SAVING_DOWNLOADS_COUNT } from "../types";
 
 const appReducer = (state, action) => {
   switch (action.type) {
@@ -35,6 +35,16 @@ const appReducer = (state, action) => {
         ...state,
         fileUrl: action.payload
       };
+    case SAVING_PASSWORD:
+      return {
+        ...state,
+        filePassword: action.payload
+      }
+    case SAVING_DOWNLOADS_COUNT:
+      return {
+        ...state,
+        fileDownloadsCount: action.payload
+      }
     case CLEAN_STATE:
       return {
         ...state,

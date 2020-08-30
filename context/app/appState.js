@@ -1,7 +1,7 @@
 import React, { useReducer } from 'react'
 import AppContext from './appContext';
 import appReducer from './appReducer';
-import { SHOW_ALERT, CLEAN_ALERTS, UPLOAD_FILE_SUCCESS, UPLOAD_FILE_ERROR, LOADING_UPLOAD, CREATE_LINK_SUCCESS, CLEAN_STATE } from '../types';
+import { SHOW_ALERT, CLEAN_ALERTS, UPLOAD_FILE_SUCCESS, UPLOAD_FILE_ERROR, LOADING_UPLOAD, CREATE_LINK_SUCCESS, CLEAN_STATE, SAVING_PASSWORD, SAVING_DOWNLOADS_COUNT } from '../types';
 import axiosClient from '../../config/axios';
 
 const AppState = ({children}) => {
@@ -32,7 +32,6 @@ const AppState = ({children}) => {
     })
     try {
       const response = await axiosClient.post("/api/files", formData);
-      console.log(response.data.file);
       dispatch({
         type: UPLOAD_FILE_SUCCESS,
         payload: {
@@ -70,6 +69,20 @@ const AppState = ({children}) => {
     }
   }
 
+  const savePassword = password => {
+    dispatch({
+      type: SAVING_PASSWORD,
+      payload: password
+    });
+  }
+
+  const saveDownloadsCount = count => {
+    dispatch({
+      type: SAVING_DOWNLOADS_COUNT,
+      payload: count
+    })
+  }
+
   const resetState = () => {
     dispatch({
       type: CLEAN_STATE,
@@ -97,6 +110,8 @@ const AppState = ({children}) => {
       showAlert,
       uploadFile,
       createLink,
+      savePassword,
+      saveDownloadsCount,
       resetState
     }}>
       {children}
